@@ -19,9 +19,9 @@
 - No celular, condensar a navegação sem perder busca, conta e carrinho; todos os alvos de toque terão pelo menos 44 px.
 
 ### Página inicial
-- Criar banner comercial com fotografia existente de tabacaria, texto objetivo e chamadas para catálogo e atacado.
+- Criar banner comercial usando somente imagem já fornecida no projeto e aprovada, com texto objetivo e chamadas para catálogo e atacado.
 - Exibir categorias em atalhos visuais.
-- Exibir produtos em destaque com dados simulados: imagem ilustrativa, nome, unidade, disponibilidade, preço e quantidade.
+- Exibir produtos em destaque com dados simulados: nome, unidade, disponibilidade, preço e quantidade. Imagens somente quando houver arquivo fornecido e aprovado; nos demais casos, usar placeholders neutros que não simulem produtos, marcas ou ambientes da Lotus 73.
 - Reforçar compra prática com chamadas comerciais, sem conteúdo institucional inventado.
 
 ### Catálogo
@@ -58,6 +58,13 @@
 
 - Publicar o arquivo original como ativo da aplicação e utilizá-lo no cabeçalho e em pontos institucionais adequados.
 - Criar o favicon a partir do mesmo arquivo, apenas reduzindo e centralizando proporcionalmente para o formato técnico exigido; o desenho permanecerá intacto.
+
+## Política de imagens
+
+- Utilizar exclusivamente imagens já fornecidas no projeto ou explicitamente aprovadas pelo cliente.
+- Não gerar imagens por IA nesta etapa.
+- Não usar fotografias de produtos, marcas ou ambientes não autorizados como se fossem da Lotus 73.
+- Quando não houver imagem aprovada para um produto ou categoria, exibir um placeholder gráfico neutro construído com o design system, claramente sem caráter fotográfico.
 - Remover a marca textual improvisada atual do cabeçalho.
 
 ## Acessibilidade e responsividade
@@ -76,6 +83,7 @@
 ## Validação
 
 - Confirmar que o logotipo exibido é o arquivo oficial e não sofreu transformação visual.
+- Confirmar que todas as imagens exibidas foram fornecidas ou aprovadas e que nenhum produto ou ambiente foi inventado visualmente.
 - Verificar Início, Catálogo, Produto e Atacado em desktop e celular.
 - Testar busca, filtros, seleção de quantidade, abertura do carrinho e navegação por teclado.
 - Revisar textos para garantir ausência total de referências automotivas ou informações de marca não fornecidas.
