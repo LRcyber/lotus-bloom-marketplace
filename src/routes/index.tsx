@@ -58,7 +58,7 @@ function Home() {
           <div className="relative mx-auto w-full max-w-6xl px-6 py-28">
             <p className="text-eyebrow">Tabacaria desde o primeiro balcão</p>
             <h1 className="mt-4 max-w-2xl text-5xl leading-tight font-semibold text-foreground md:text-6xl">
-              Lotus 73, agora com pedidos online para varejo e atacado
+              Lotus 73, agora com pedidos pela loja virtual
             </h1>
             <p className="mt-6 max-w-xl text-base text-muted-foreground">
               Navegue pelo catálogo, monte seu pedido e acompanhe cada etapa. Clientes
