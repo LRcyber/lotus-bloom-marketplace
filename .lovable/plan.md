@@ -49,19 +49,24 @@ Convenções: PK `uuid default gen_random_uuid()`, `created_at/updated_at timest
 - **orders** — `order_number (unique)`, `customer_id`, `channel('retail','wholesale')` congelado na criação, `status('recebido','confirmado','em_preparacao','saiu_entrega','entregue','cancelado')`, `subtotal`, `discount`, `total`, `shipping` (PENDENTE DE DEFINIÇÃO — campo previsto, sem cálculo), `payment_method` (PENDENTE DE DEFINIÇÃO — sem regra), `address_id`, `customer_notes`, `lj_sync_status('not_sent','pending','sent','error')`, `lj_sale_id`, `lj_synced_at`, `idempotency_key text UNIQUE`. Cliente lê/insere o próprio; status só admin/staff.
 - **order_items** — `order_id (cascade)`, `product_id`, snapshots `cod_produto`, `nome_snapshot`, `unidade`, `quantidade > 0`, `unit_price`, `line_total`.
 - **order_status_history** — `order_id`, `from_status`, `to_status`, `changed_by`, `changed_at`.
-- **sync_control** — `entity('products','stock','sales')`, `last_run_at`, `last_success_at`, `cursor`, `status`, `error_message`, `running`. Só admin/service_role.
+- **sync_control** — `entity('products','stock','sales')`, `last_run_at`, `last_success_at`, `status`, `error_message`, `running`. Sincronização incremental de produtos usa `last_success_at` → `regStamp` → `filtros64` → próxima execução. A API do LJ **não tem paginação**, portanto não há cursor de paginação; se o campo `cursor` for mantido, fica documentado como "Não utilizado para paginação do LJ Sistemas". Só admin/service_role.
 - **integration_logs** — `integration('lj','n8n','whatsapp')`, `direction`, `operation`, `reference_id`, `request_payload jsonb`, `response_payload jsonb`, `http_status`, `success`, `error_message`. Só admin/service_role; nunca registra credenciais ou tokens.
 
 ## 4. Regras de negócio
 
-1. Preço não pertence ao produto: o canal do usuário decide (`retail` por padrão; `wholesale` somente após aprovação).
-2. Preço nulo ou 0 no canal → "Preço sob consulta"; nunca R$ 0,00.
-3. Catálogo único; nenhum produto é escondido por falta de um dos preços.
-4. Canal e preços são resolvidos e revalidados no servidor no checkout; preço enviado pelo cliente nunca é aceito.
-5. Itens do pedido guardam snapshot de nome, unidade e preço.
-6. Status do pedido controlado apenas pelo painel administrativo; nunca vindo do LJ.
-7. Estoque: LJ será fonte de verdade no futuro. Política de estoque zero (bloquear ou permitir pedido) = PENDENTE DE DEFINIÇÃO; nenhum bloqueio rígido agora.
-8. Pagamento e frete: sem gateway, sem cálculo, sem regra — campos apenas previstos.
+1. Preço não pertence ao produto: o canal do usuário decide, e a decisão é **sempre server-side**.
+2. Server function conceitual `resolveProductPrice(productId, authenticatedUser)` é a única autoridade de preço:
+   - não autenticado → `preco_varejo`
+   - cliente varejo → `preco_varejo`
+   - cliente atacado com `wholesale_customers.status = 'approved'` → `preco_atacado`
+   - atacado `pending` ou `rejected` → `preco_varejo`
+   - preço do canal NULL ou 0 → retorna "Preço sob consulta" (`price: null`), sem remover o produto do catálogo
+3. O frontend nunca determina preço: recebe do servidor apenas o preço aplicável já resolvido (nunca `SELECT *` com as duas colunas de preço para escolher no cliente); a projeção pública do catálogo expõe somente o preço do canal do usuário.
+4. Snapshot na criação do pedido: Frontend → Server Function → consulta produto → resolve preço → valida regras → cria `order_item` → grava `unit_price`. O `unit_price` enviado pelo frontend nunca é aceito como valor definitivo; o item guarda o preço efetivamente aplicado, além de nome e unidade.
+5. Status do pedido controlado apenas pelo painel administrativo; nunca vindo do LJ nem do n8n.
+6. Estoque: **LJ Sistemas = fonte de verdade**; `products.estoque` no Supabase é cópia operacional atualizada por sincronização. Clientes nunca editam estoque. Política de estoque = 0 (bloquear ou permitir pedido): PENDENTE DE DEFINIÇÃO; sem bloqueio rígido agora.
+7. Pagamento e frete: sem gateway, sem cálculo, sem regra — campos apenas previstos.
+
 
 ## 5. Segurança
 
