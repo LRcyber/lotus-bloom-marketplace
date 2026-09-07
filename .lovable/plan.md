@@ -80,13 +80,14 @@ LJ_API_CLIENT_ID
 LJ_API_CLIENT_SECRET
 ```
 
-JWT do LJ nunca é enviado ao frontend nem persistido em logs. Webhooks em `/api/public/*` validam assinatura antes de qualquer escrita.
+JWT do LJ nunca é enviado ao frontend nem armazenado; é obtido em memória no servidor a cada necessidade. Webhooks em `/api/public/*` validam assinatura antes de qualquer escrita. Nenhum log registra credenciais ou tokens.
 
 ## 6. Integrações futuras (não implementar agora)
 
-- **LJ Sistemas** — somente `POST /token`, `GET /produtos`, `POST /vendas`. Sincronização de produtos/estoque grava em `products`, `sync_control` e `integration_logs`; envio de venda idempotente por `idempotency_key`, com estado em `orders.lj_sync_status`. Execução exclusivamente no servidor.
-- **n8n** — automações, sincronizações programadas, notificações e monitoramento. Não é banco, não controla estado de pedidos, não fica no caminho crítico da criação de venda.
+- **LJ Sistemas** — somente `POST /token`, `GET /produtos`, `POST /vendas`; nenhum endpoint inventado. Autenticação com `LJ_API_BASE_URL`, `LJ_API_CLIENT_ID`, `LJ_API_CLIENT_SECRET` (server-side). Sincronização incremental via `last_success_at`/`regStamp`/`filtros64`, sem paginação, gravando em `products`, `sync_control` e `integration_logs`; envio de venda idempotente por `idempotency_key`, com estado em `orders.lj_sync_status`. Execução exclusivamente no servidor.
+- **n8n** — automações, sincronizações programadas, notificações e monitoramento. Não é banco, não é fonte de verdade, não controla o status principal dos pedidos, não fica no caminho crítico da criação de venda.
 - **WhatsApp** — notificações via n8n.
+
 
 ## 7. Pendências para decisão do cliente
 
