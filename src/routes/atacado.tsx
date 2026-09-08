@@ -1,63 +1,22 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { StoreShell } from "@/components/store-shell";
 
 export const Route = createFileRoute("/atacado")({
-  head: () => ({
-    meta: [
-      { title: "Atacado — Lotus 73" },
-      {
-        name: "description",
-        content:
-          "Como funciona o atacado na Lotus 73: cadastro com CNPJ, aprovação pela equipe e preços de atacado liberados.",
-      },
-      { property: "og:title", content: "Atacado — Lotus 73" },
-      {
-        property: "og:description",
-        content: "Cadastre seu CNPJ e compre com as condições de atacado da Lotus 73.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Atacado,
+  head: () => ({ meta: [
+    { title: "Atacado — Lotus 73" }, { name: "description", content: "Entenda as condições de compra no atacado da Lotus 73." },
+    { property: "og:title", content: "Atacado — Lotus 73" }, { property: "og:description", content: "Cadastro e aprovação para condições de atacado da Lotus 73." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
+  ] }), component: Atacado,
 });
 
 const steps = [
-  { n: "01", t: "Cadastro", d: "Você cria sua conta e informa o CNPJ da empresa." },
-  { n: "02", t: "Análise", d: "A equipe da Lotus 73 confere os dados e aprova o cadastro." },
-  { n: "03", t: "Preços liberados", d: "Aprovado, o catálogo passa a mostrar seus preços de atacado." },
+  { n: "01", t: "Cadastro", d: "Crie sua conta e informe os dados da empresa e o CNPJ." },
+  { n: "02", t: "Análise", d: "A equipe confere os dados enviados antes da liberação." },
+  { n: "03", t: "Condições liberadas", d: "Após aprovação, o catálogo apresenta os preços de atacado." },
 ];
 
 function Atacado() {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-20">
-        <p className="text-eyebrow">Atacado</p>
-        <h1 className="mt-4 text-4xl font-semibold text-foreground">
-          Condições especiais para revenda
-        </h1>
-        <p className="mt-4 max-w-xl text-sm text-muted-foreground">
-          O catálogo é o mesmo para todos. O que muda é o preço: apenas cadastros de
-          atacado aprovados enxergam os valores de atacado. Enquanto a aprovação não sai,
-          os preços exibidos são os de varejo.
-        </p>
-        <ol className="mt-10 grid gap-4 md:grid-cols-3">
-          {steps.map((s) => (
-            <li key={s.n} className="surface-panel p-6">
-              <span className="text-eyebrow">{s.n}</span>
-              <h2 className="mt-3 text-xl font-semibold text-foreground">{s.t}</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
-            </li>
-          ))}
-        </ol>
-        <p className="mt-10 text-xs text-muted-foreground">
-          O cadastro com CNPJ será ativado na etapa de contas de cliente.
-        </p>
-      </main>
-      <SiteFooter />
-    </div>
-  );
+  return <StoreShell><section className="bg-foreground text-background"><div className="mx-auto max-w-7xl px-6 py-14 sm:py-20"><p className="text-sm font-semibold text-accent">Venda para empresas</p><h1 className="mt-3 max-w-3xl text-4xl font-semibold sm:text-5xl">Condições especiais para revenda</h1><p className="mt-5 max-w-2xl text-background/75">O catálogo é o mesmo. Clientes atacadistas aprovados visualizam as condições correspondentes ao seu cadastro.</p><Button asChild size="lg" className="mt-8 h-12 bg-accent text-accent-foreground hover:bg-accent/90"><Link to="/catalogo">Conhecer o catálogo <ArrowRight /></Link></Button></div></section><section className="mx-auto max-w-7xl px-6 py-14"><p className="text-eyebrow">Como funciona</p><h2 className="mt-2 text-3xl font-semibold">Três etapas simples</h2><ol className="mt-8 grid gap-4 md:grid-cols-3">{steps.map((step) => <li key={step.n} className="surface-panel p-6"><span className="text-sm font-bold text-accent">{step.n}</span><CheckCircle2 className="mt-8 size-6 text-primary"/><h3 className="mt-4 text-xl font-semibold">{step.t}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.d}</p></li>)}</ol><div className="mt-10 border-l-4 border-warning bg-card p-5 text-sm text-muted-foreground"><strong className="text-foreground">Cadastro ainda não disponível.</strong> A criação de contas será ativada em uma próxima etapa.</div></section></StoreShell>;
 }
