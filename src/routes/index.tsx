@@ -1,97 +1,50 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-
-import heroImage from "@/assets/hero-lotus73.jpg";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { ArrowRight, Building2, PackageCheck, ShieldCheck, Sparkles } from "lucide-react";
+import logoAsset from "@/assets/lotus-73-logo.png.asset.json";
+import { Button } from "@/components/ui/button";
+import { ProductGrid } from "@/components/product-grid";
+import { StoreShell } from "@/components/store-shell";
+import { categories, products } from "@/lib/mock-products";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Lotus 73 — Tabacaria com venda no varejo e atacado" },
-      {
-        name: "description",
-        content:
-          "Catálogo da tabacaria Lotus 73 com preços de varejo e condições especiais para clientes atacadistas aprovados.",
-      },
-      { property: "og:title", content: "Lotus 73 — Tabacaria varejo e atacado" },
-      {
-        property: "og:description",
-        content:
-          "Conheça o catálogo da Lotus 73 e solicite acesso às condições de atacado.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Home,
+  head: () => ({ meta: [
+    { title: "Lotus 73 — Tabacaria e loja virtual" },
+    { name: "description", content: "Catálogo online da Lotus 73 para compras no varejo e condições de atacado." },
+    { property: "og:title", content: "Lotus 73 — Tabacaria e loja virtual" },
+    { property: "og:description", content: "Conheça o catálogo da Lotus 73 e encontre produtos para sua compra." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }), component: Home,
 });
 
-const pillars = [
-  {
-    title: "Catálogo único",
-    text: "Os mesmos produtos para todos os clientes; apenas a regra de preço muda conforme o canal.",
-  },
-  {
-    title: "Atacado aprovado",
-    text: "Cadastre o CNPJ e, após aprovação da equipe, os preços de atacado passam a valer.",
-  },
-  {
-    title: "Pedido acompanhado",
-    text: "Cada pedido tem status atualizado pela equipe, do recebimento até a entrega.",
-  },
-];
+const categoryIcons = [Sparkles, PackageCheck, ShieldCheck, Building2];
 
 function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <SiteHeader />
-
-      <main className="flex-1">
-        <section className="relative overflow-hidden border-b border-border">
-          <img
-            src={heroImage}
-            alt="Balcão de tabacaria com charutos em umidificador e folhas de tabaco"
-            width={1600}
-            height={1008}
-            className="absolute inset-0 h-full w-full object-cover opacity-45"
-          />
-          <div className="relative mx-auto w-full max-w-6xl px-6 py-28">
-            <p className="text-eyebrow">Tabacaria desde o primeiro balcão</p>
-            <h1 className="mt-4 max-w-2xl text-5xl leading-tight font-semibold text-foreground md:text-6xl">
-              Lotus 73, agora com pedidos pela loja virtual
-            </h1>
-            <p className="mt-6 max-w-xl text-base text-muted-foreground">
-              Navegue pelo catálogo, monte seu pedido e acompanhe cada etapa. Clientes
-              atacadistas aprovados veem automaticamente suas condições.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Link
-                to="/catalogo"
-                className="inline-flex items-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-              >
-                Ver catálogo
-              </Link>
-              <Link
-                to="/atacado"
-                className="inline-flex items-center rounded-md border border-border px-6 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
-              >
-                Sou atacadista
-              </Link>
+    <StoreShell>
+      <section className="border-b border-border bg-foreground text-background">
+        <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-6 py-12 md:grid-cols-[minmax(0,1fr)_340px] md:py-16">
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-accent">Catálogo para varejo e atacado</p>
+            <h1 className="mt-3 max-w-3xl text-4xl leading-tight font-semibold sm:text-5xl lg:text-6xl">Lotus 73, agora com pedidos pela loja virtual</h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-background/75 sm:text-lg">Encontre o que precisa, organize seu pedido e acompanhe cada etapa com praticidade.</p>
+            <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
+              <Button size="lg" asChild className="h-12 bg-accent text-accent-foreground hover:bg-accent/90"><Link to="/catalogo">Ver catálogo <ArrowRight /></Link></Button>
+              <Button size="lg" variant="outline" asChild className="h-12 border-background/30 bg-transparent text-background hover:bg-background hover:text-foreground"><Link to="/atacado">Comprar no atacado</Link></Button>
             </div>
           </div>
-        </section>
+          <img src={logoAsset.url} alt="Lotus 73 Tabacaria" className="mx-auto w-full max-w-72 rounded-full object-contain md:max-w-80" />
+        </div>
+      </section>
 
-        <section className="mx-auto grid w-full max-w-6xl gap-6 px-6 py-20 md:grid-cols-3">
-          {pillars.map((p) => (
-            <article key={p.title} className="surface-panel p-6">
-              <h2 className="text-xl font-semibold text-foreground">{p.title}</h2>
-              <p className="mt-3 text-sm text-muted-foreground">{p.text}</p>
-            </article>
-          ))}
-        </section>
-      </main>
+      <section className="mx-auto w-full max-w-7xl px-6 py-12" aria-labelledby="categorias-title">
+        <div className="flex items-end justify-between gap-4"><div><p className="text-eyebrow">Encontre rápido</p><h2 id="categorias-title" className="mt-2 text-3xl font-semibold">Categorias</h2></div><Link to="/catalogo" className="hidden text-sm font-semibold text-primary sm:inline">Ver todas</Link></div>
+        <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">{categories.slice(1).map((category, index) => { const Icon = categoryIcons[index]; return <Link key={category} to="/catalogo" search={{ categoria: category }} className="flex min-h-28 flex-col justify-between rounded-lg border border-border bg-card p-4 shadow-product transition-colors hover:border-primary"><Icon className="size-6 text-primary" /><span className="font-display text-lg font-semibold">{category}</span></Link>; })}</div>
+      </section>
 
-      <SiteFooter />
-    </div>
+      <section className="border-y border-border bg-card"><div className="mx-auto w-full max-w-7xl px-6 py-14"><div className="flex items-end justify-between gap-4"><div><p className="text-eyebrow">Seleção Lotus 73</p><h2 className="mt-2 text-3xl font-semibold">Produtos em destaque</h2></div><Button variant="outline" asChild className="hidden sm:inline-flex"><Link to="/catalogo">Ver catálogo</Link></Button></div><div className="mt-7"><ProductGrid products={products.filter((product) => product.featured)} /></div></div></section>
+
+      <section className="mx-auto w-full max-w-7xl px-6 py-14"><div className="grid gap-6 border-y border-border py-10 md:grid-cols-3"><div><ShieldCheck className="size-6 text-primary"/><h2 className="mt-4 text-xl font-semibold">Compra organizada</h2><p className="mt-2 text-sm text-muted-foreground">Revise produtos e quantidades antes de finalizar.</p></div><div><PackageCheck className="size-6 text-primary"/><h2 className="mt-4 text-xl font-semibold">Disponibilidade clara</h2><p className="mt-2 text-sm text-muted-foreground">Consulte a indicação de estoque em cada item.</p></div><div><Building2 className="size-6 text-primary"/><h2 className="mt-4 text-xl font-semibold">Condições para revenda</h2><p className="mt-2 text-sm text-muted-foreground">Preços de atacado para cadastros aprovados.</p></div></div></section>
+    </StoreShell>
   );
 }
