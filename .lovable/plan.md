@@ -37,20 +37,33 @@ auth.users ─┬─ user_roles
 categories ── products ── product_images
 ```
 
-## 3. Segurança (RLS)
+## 3. Segurança (RLS) — revisada
 
-- Função `public.has_role(_user_id uuid, _role app_role)` — SQL, stable, security definer, `search_path = public`. Papel nunca no profile.
-- Função auxiliar `public.current_customer_id()` (security definer) para políticas de dados do cliente.
-- `profiles` / `customers` / `addresses`: dono lê e escreve o próprio; admin e staff leem tudo; admin escreve.
-- `wholesale_customers`: cliente lê e insere o próprio; somente admin altera `status` e campos de revisão.
-- `categories` / `products` / `product_images`: SELECT público (`anon` e `authenticated`) apenas de registros ativos; escrita somente admin/staff e service_role.
-- `orders` / `order_items` / `order_status_history`: cliente lê e cria os próprios; alteração de status apenas admin/staff.
-- `sync_control` / `integration_logs`: apenas admin e service_role; nunca guardam credenciais ou tokens.
-- `estoque` nunca é gravável por cliente (sem política de update para o papel customer).
+Funções de segurança (todas `security definer`, `set search_path = public`):
 
-## 4. Preços — apenas a base
+- `has_role(_user_id uuid, _role app_role)` — autorização por papel; papel nunca no profile.
+- `is_staff(_user_id uuid)` — admin ou staff.
+- `current_customer_id()` — customer do usuário autenticado, usado pelas policies de dados do cliente.
+- `current_price_channel()` — retorna 'wholesale' apenas quando existe `wholesale_customers.status = 'approved'`; caso contrário 'retail'. Preparada para a resolução de preço, sem uso obrigatório nesta etapa.
 
-`preco_atacado` não é exposto por consulta pública: a leitura pública do catálogo será feita por uma função de servidor com projeção explícita de colunas (sem `SELECT *`), que nesta etapa retorna apenas `preco_varejo`. A regra completa (não autenticado e varejo → varejo; atacadista aprovado → atacado; pendente/rejeitado → varejo) fica preparada mas não implementada aqui.
+Policies por tabela:
+
+- **products / product_images**: sem nenhuma policy de SELECT para `anon` ou `authenticated` e sem GRANT de SELECT para esses papéis. RLS controla linhas, não colunas — por isso o acesso direto à tabela é fechado. Escrita apenas admin/staff e service_role. `estoque`, `preco_varejo` e `preco_atacado` não têm nenhum caminho de UPDATE para cliente.
+- **categories**: SELECT público apenas de `active = true` (não contém dado sensível).
+- **Catálogo público**: leitura exclusivamente por view/RPC de projeção segura (`catalog_products`), que expõe `id, cod_produto, nome, unidade, codigo_barras, category_id, imagem_url, estoque, preco` — onde `preco` é uma única coluna já resolvida pelo servidor (`preco_varejo` nesta etapa) e `preco_atacado` nunca aparece na projeção. Nenhuma consulta usa `SELECT *`.
+- **profiles**: dono faz SELECT do próprio; UPDATE do dono restrito a `full_name` e `phone` — `customer_type`, `id` e campos de sistema são bloqueados por trigger `BEFORE UPDATE` que rejeita a alteração quando o autor não é admin. Sem policy de INSERT para o cliente (criado pelo trigger de cadastro). Admin/staff leem; admin escreve.
+- **customers / addresses**: dono lê e mantém os próprios (o cliente não pode trocar `profile_id`/`customer_id` para outro); admin/staff leem tudo; admin escreve.
+- **wholesale_customers**: cliente lê e insere a própria solicitação com `status` forçado a 'pending' por trigger; alteração de `status`, `reviewed_by`, `reviewed_at`, `rejection_reason` somente admin.
+- **orders**: cliente faz SELECT apenas dos pedidos do próprio customer. Nesta etapa **não existe policy de INSERT/UPDATE para o cliente** — pedidos serão criados por função de servidor (identifica usuário → customer → canal → aprovação → resolve preços → valida produtos e estoque → calcula subtotal → cria order e order_items com snapshots). `status`, `channel`, `subtotal`, `discount`, `shipping`, `lj_sync_status`, `lj_sale_id`, `lj_synced_at` só mudam por admin/staff ou service_role; trigger de guarda registra a transição em `order_status_history`.
+- **order_items**: cliente apenas lê os itens dos próprios pedidos; sem INSERT/UPDATE/DELETE para cliente. `quantidade > 0` por CHECK, e `line_total` conferido por CHECK contra `quantidade * unit_price`.
+- **order_status_history**: leitura pelo dono do pedido e por admin/staff; escrita apenas por trigger/service_role.
+- **user_roles**: SELECT do próprio papel; nenhum INSERT/UPDATE/DELETE para `authenticated` — somente admin (via `has_role`) e service_role. O papel `customer` é concedido apenas pelo trigger de criação de usuário.
+- **sync_control / integration_logs**: apenas admin e service_role; nunca guardam credenciais ou tokens.
+
+## 4. Matriz de verificação após a migration
+
+Cenários testados com consultas reais (anônimo, varejo, atacado pending, atacado approved, staff, admin) para cada capacidade: ver `preco_atacado`, alterar `customer_type`, alterar preço, alterar estoque, alterar status, alterar `lj_sync_status`, criar pedido com preço arbitrário, criar pedido em nome de outro cliente, ler pedido de outro cliente, alterar papel. Esperado: negado para todos os perfis de cliente; leitura e status apenas para staff/admin; administração de papéis apenas para admin. O resultado é apresentado como tabela no relatório final, junto com o scan de segurança.
+
 
 ## 5. Detalhes técnicos
 
