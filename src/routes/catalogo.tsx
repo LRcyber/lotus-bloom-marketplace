@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { categories, products } from "@/lib/mock-products";
 
 export const Route = createFileRoute("/catalogo")({
-  validateSearch: (search: Record<string, unknown>) => ({ categoria: typeof search.categoria === "string" ? search.categoria : undefined }),
+  validateSearch: (search: Record<string, unknown>) => ({ ['categoria']: typeof search['categoria'] === "string" ? search['categoria'] : undefined }),
   head: () => ({ meta: [
     { title: "Catálogo — Lotus 73" },
     { name: "description", content: "Catálogo da Lotus 73 com produtos, preços de varejo e condições para atacado." },
