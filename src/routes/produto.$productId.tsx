@@ -22,11 +22,11 @@ function ProductPage() {
   const product = products.find((item) => item.id === productId);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useStore();
-  if (!product) return <StoreShell><div className="mx-auto max-w-7xl px-6 py-20"><h1 className="text-3xl font-semibold">Produto não encontrado</h1><Button asChild className="mt-6"><Link to="/catalogo">Voltar ao catálogo</Link></Button></div></StoreShell>;
+  if (!product) return <StoreShell><div className="mx-auto max-w-7xl px-6 py-20"><h1 className="text-3xl font-semibold">Produto não encontrado</h1><Button asChild className="mt-6"><Link to="/catalogo" search={{ categoria: undefined }}>Voltar ao catálogo</Link></Button></div></StoreShell>;
   return (
     <StoreShell>
       <div className="mx-auto w-full max-w-7xl px-6 py-10">
-        <nav className="text-sm text-muted-foreground"><Link to="/catalogo" className="hover:text-primary">Catálogo</Link> / {product.name}</nav>
+        <nav className="text-sm text-muted-foreground"><Link to="/catalogo" search={{ categoria: undefined }} className="hover:text-primary">Catálogo</Link> / {product.name}</nav>
         <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:items-start">
           <ProductVisual name={product.name} className="rounded-lg border border-border" />
           <div className="lg:py-6"><p className="text-eyebrow">{product.category}</p><h1 className="mt-3 text-4xl font-semibold sm:text-5xl">{product.name}</h1><p className="mt-3 text-muted-foreground">Venda por {product.unit}.</p><div className="mt-6"><StatusBadge stock={product.stock} /></div><p className="mt-6 text-3xl font-bold">{formatPrice(product.price)}</p><p className="mt-2 text-sm text-muted-foreground">{product.stock} unidades disponíveis para pedido.</p>
