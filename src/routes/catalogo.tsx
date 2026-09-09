@@ -26,7 +26,7 @@ function FilterList({ selected, onSelect }: { selected: string; onSelect: (value
 }
 
 function Catalogo() {
-  const { categoria } = Route.useSearch();
+  const { ['categoria']: categoria } = Route.useSearch();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(categoria && categories.includes(categoria) ? categoria : "Todos");
   const [order, setOrder] = useState("relevancia");
