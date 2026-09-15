@@ -15,6 +15,13 @@
       "when": 1789439466912,
       "tag": "0001_harden_lotus73_stage03_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789439528565,
+      "tag": "0002_restrict_lotus73_stage03_grants",
+      "breakpoints": true
     }
   ]
 }
