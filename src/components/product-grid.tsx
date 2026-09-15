@@ -1,4 +1,4 @@
-import type { Product } from "@/lib/mock-products";
+import type { Product } from "@/lib/catalog";
 import { ProductCard } from "@/components/product-card";
 
 export function ProductGrid({ products }: { products: Product[] }) {

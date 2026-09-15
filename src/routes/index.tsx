@@ -1,12 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight, Building2, PackageCheck, ShieldCheck, Sparkles } from "lucide-react";
 import logoAsset from "@/assets/lotus-73-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { ProductGrid } from "@/components/product-grid";
 import { StoreShell } from "@/components/store-shell";
-import { categories, products } from "@/lib/mock-products";
+import { getPublicCatalog } from "@/lib/catalog.functions";
+
+const catalogQueryOptions = queryOptions({ queryKey: ["public-catalog"], queryFn: () => getPublicCatalog() });
 
 export const Route = createFileRoute("/")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(catalogQueryOptions),
   head: () => ({ meta: [
     { title: "Lotus 73 — Tabacaria e loja virtual" },
     { name: "description", content: "Catálogo online da Lotus 73 para compras no varejo e condições de atacado." },
@@ -15,11 +19,16 @@ export const Route = createFileRoute("/")({
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }), component: Home,
+  errorComponent: () => <StoreShell><div role="alert" className="mx-auto max-w-7xl px-6 py-20"><h1 className="text-3xl font-semibold">Loja temporariamente indisponível</h1><p className="mt-3 text-muted-foreground">Não foi possível carregar o catálogo agora.</p></div></StoreShell>,
+  notFoundComponent: () => <StoreShell><div className="mx-auto max-w-7xl px-6 py-20"><h1 className="text-3xl font-semibold">Página não encontrada</h1></div></StoreShell>,
 });
 
 const categoryIcons = [Sparkles, PackageCheck, ShieldCheck, Building2];
 
 function Home() {
+  const { data } = useSuspenseQuery(catalogQueryOptions);
+  const categories = data.categories.slice(0, 4);
+  const products = data.products.slice(0, 4);
   return (
     <StoreShell>
       <section className="border-b border-border bg-foreground text-background">
@@ -39,10 +48,10 @@ function Home() {
 
       <section className="mx-auto w-full max-w-7xl px-6 py-12" aria-labelledby="categorias-title">
         <div className="flex items-end justify-between gap-4"><div><p className="text-eyebrow">Encontre rápido</p><h2 id="categorias-title" className="mt-2 text-3xl font-semibold">Categorias</h2></div><Link to="/catalogo" search={{ categoria: undefined }} className="hidden text-sm font-semibold text-primary sm:inline">Ver todas</Link></div>
-        <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">{categories.slice(1).map((category, index) => { const Icon = categoryIcons[index] ?? Sparkles; return <Link key={category} to="/catalogo" search={{ categoria: category }} className="flex min-h-28 flex-col justify-between rounded-lg border border-border bg-card p-4 shadow-product transition-colors hover:border-primary"><Icon className="size-6 text-primary" /><span className="font-display text-lg font-semibold">{category}</span></Link>; })}</div>
+        <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">{categories.map((category, index) => { const Icon = categoryIcons[index] ?? Sparkles; return <Link key={category} to="/catalogo" search={{ categoria: category }} className="flex min-h-28 flex-col justify-between rounded-lg border border-border bg-card p-4 shadow-product transition-colors hover:border-primary"><Icon className="size-6 text-primary" /><span className="font-display text-lg font-semibold">{category}</span></Link>; })}</div>
       </section>
 
-      <section className="border-y border-border bg-card"><div className="mx-auto w-full max-w-7xl px-6 py-14"><div className="flex items-end justify-between gap-4"><div><p className="text-eyebrow">Seleção Lotus 73</p><h2 className="mt-2 text-3xl font-semibold">Produtos em destaque</h2></div><Button variant="outline" asChild className="hidden sm:inline-flex"><Link to="/catalogo" search={{ categoria: undefined }}>Ver catálogo</Link></Button></div><div className="mt-7"><ProductGrid products={products.filter((product) => product.featured)} /></div></div></section>
+      <section className="border-y border-border bg-card"><div className="mx-auto w-full max-w-7xl px-6 py-14"><div className="flex items-end justify-between gap-4"><div><p className="text-eyebrow">Seleção Lotus 73</p><h2 className="mt-2 text-3xl font-semibold">Produtos em destaque</h2></div><Button variant="outline" asChild className="hidden sm:inline-flex"><Link to="/catalogo" search={{ categoria: undefined }}>Ver catálogo</Link></Button></div><div className="mt-7"><ProductGrid products={products} /></div></div></section>
 
       <section className="mx-auto w-full max-w-7xl px-6 py-14"><div className="grid gap-6 border-y border-border py-10 md:grid-cols-3"><div><ShieldCheck className="size-6 text-primary"/><h2 className="mt-4 text-xl font-semibold">Compra organizada</h2><p className="mt-2 text-sm text-muted-foreground">Revise produtos e quantidades antes de finalizar.</p></div><div><PackageCheck className="size-6 text-primary"/><h2 className="mt-4 text-xl font-semibold">Disponibilidade clara</h2><p className="mt-2 text-sm text-muted-foreground">Consulte a indicação de estoque em cada item.</p></div><div><Building2 className="size-6 text-primary"/><h2 className="mt-4 text-xl font-semibold">Condições para revenda</h2><p className="mt-2 text-sm text-muted-foreground">Preços de atacado para cadastros aprovados.</p></div></div></section>
     </StoreShell>

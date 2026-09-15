@@ -6,3 +6,4 @@
 - [x] Ajustar atacado, acessibilidade e responsividade
 - [x] Validar todas as telas e interações
 - [x] Criar e validar a estrutura segura de banco da Etapa 03
+- [x] Conectar o catálogo visual à projeção segura do banco
