@@ -8,6 +8,13 @@
       "when": 1789439371374,
       "tag": "0000_create_lotus73_stage03_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789439466912,
+      "tag": "0001_harden_lotus73_stage03_policies",
+      "breakpoints": true
     }
   ]
 }
