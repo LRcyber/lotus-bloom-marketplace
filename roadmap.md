@@ -5,3 +5,4 @@
 - [x] Construir início, catálogo, produto e carrinho demonstrativo
 - [x] Ajustar atacado, acessibilidade e responsividade
 - [x] Validar todas as telas e interações
+- [x] Criar e validar a estrutura segura de banco da Etapa 03
