@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { formatPrice, type Product } from "@/lib/mock-products";
+import { formatPrice, type Product } from "@/lib/catalog";
 import { ProductVisual } from "@/components/product-visual";
 import { StatusBadge } from "@/components/status-badge";
 import { useStore } from "@/components/store-provider";
@@ -13,7 +13,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
   return (
     <article className="group flex min-w-0 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-product transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-elevated">
       <Link to="/produto/$productId" params={{ productId: product.id }} className="overflow-hidden focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring">
-        <ProductVisual name={product.name} index={index} className="transition-transform duration-300 group-hover:scale-[1.02]" />
+        <ProductVisual name={product.name} category={product.category} imageUrl={product.imageUrl} index={index} className="transition-transform duration-300 group-hover:scale-[1.02]" />
       </Link>
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-start justify-between gap-2">

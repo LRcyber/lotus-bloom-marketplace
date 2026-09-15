@@ -1,7 +1,7 @@
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { formatPrice } from "@/lib/mock-products";
+import { formatPrice } from "@/lib/catalog";
 import { useStore } from "@/components/store-provider";
 
 export function CartDrawer() {
