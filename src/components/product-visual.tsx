@@ -3,8 +3,13 @@ import { cn } from "@/lib/utils";
 
 const icons = [Box, PackageCheck, PackageOpen, Sparkles];
 
-export function ProductVisual({ name, imageUrl, index = 0, className }: { name: string; imageUrl?: string | null; index?: number; className?: string }) {
-  const Icon = icons[index % icons.length] ?? Box;
+function getCategoryIcon(category: string, index: number) {
+  const categoryValue = [...category].reduce((total, character) => total + character.charCodeAt(0), 0);
+  return icons[(categoryValue + index) % icons.length] ?? Box;
+}
+
+export function ProductVisual({ name, category = "Outros", imageUrl, index = 0, className }: { name: string; category?: string; imageUrl?: string | null; index?: number; className?: string }) {
+  const Icon = getCategoryIcon(category, index);
   if (imageUrl) return <img src={imageUrl} alt={name} loading="lazy" className={cn("aspect-square w-full object-cover", className)} />;
   return (
     <div role="img" aria-label={`Imagem não disponível para ${name}`} className={cn("grid aspect-square place-items-center bg-secondary", className)}>
