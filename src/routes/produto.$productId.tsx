@@ -16,8 +16,8 @@ const catalogQueryOptions = queryOptions({ queryKey: ["public-catalog"], queryFn
 export const Route = createFileRoute("/produto/$productId")({
   loader: ({ context }) => context.queryClient.ensureQueryData(catalogQueryOptions),
   head: () => ({ meta: [
-    { title: "Produto — Lotus 73" }, { name: "description", content: "Consulte detalhes e disponibilidade deste produto no catálogo da Lotus 73." },
-    { property: "og:title", content: "Produto — Lotus 73" }, { property: "og:description", content: "Detalhes e disponibilidade do produto." },
+    { title: "Produto — Loja virtual" }, { name: "description", content: "Consulte detalhes e disponibilidade deste produto na loja virtual." },
+    { property: "og:title", content: "Produto — Loja virtual" }, { property: "og:description", content: "Detalhes e disponibilidade do produto na loja virtual." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ] }), component: ProductPage,
   errorComponent: () => <StoreShell><div role="alert" className="mx-auto max-w-7xl px-6 py-20"><h1 className="text-3xl font-semibold">Produto indisponível</h1><p className="mt-3 text-muted-foreground">Não foi possível carregar este produto agora.</p></div></StoreShell>,

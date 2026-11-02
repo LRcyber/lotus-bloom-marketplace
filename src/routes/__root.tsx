@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { StoreProvider } from "@/components/store-provider";
@@ -36,7 +37,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -79,11 +80,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lotus 73 — Tabacaria" },
-      { name: "description", content: "Tabacaria Lotus 73: catálogo online com preços de varejo e atacado." },
-      { name: "author", content: "Lotus 73" },
-      { property: "og:title", content: "Lotus 73 — Tabacaria" },
-      { property: "og:description", content: "Catálogo online da tabacaria Lotus 73." },
+      { title: "Loja virtual" },
+      { name: "description", content: "Catálogo online com produtos e preços de varejo." },
+      { property: "og:title", content: "Loja virtual" },
+      { property: "og:description", content: "Catálogo online para varejo e atacado." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -98,7 +98,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
 
