@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight, Building2, PackageCheck, ShieldCheck, Sparkles } from "lucide-react";
-import logoAsset from "@/assets/lotus-73-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { ProductGrid } from "@/components/product-grid";
 import { StoreShell } from "@/components/store-shell";
@@ -12,10 +11,10 @@ const catalogQueryOptions = queryOptions({ queryKey: ["public-catalog"], queryFn
 export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(catalogQueryOptions),
   head: () => ({ meta: [
-    { title: "Lotus 73 — Tabacaria e loja virtual" },
-    { name: "description", content: "Catálogo online da Lotus 73 para compras no varejo e condições de atacado." },
-    { property: "og:title", content: "Lotus 73 — Tabacaria e loja virtual" },
-    { property: "og:description", content: "Conheça o catálogo da Lotus 73 e encontre produtos para sua compra." },
+    { title: "Loja virtual — Varejo e atacado" },
+    { name: "description", content: "Catálogo online para compras no varejo e condições de atacado." },
+    { property: "og:title", content: "Loja virtual — Varejo e atacado" },
+    { property: "og:description", content: "Conheça o catálogo e consulte os produtos disponíveis." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }), component: Home,
@@ -32,17 +31,16 @@ function Home() {
   return (
     <StoreShell>
       <section className="border-b border-border bg-foreground text-background">
-        <div className="mx-auto grid w-full max-w-7xl items-center gap-10 px-6 py-12 md:grid-cols-[minmax(0,1fr)_340px] md:py-16">
+        <div className="mx-auto w-full max-w-7xl px-6 py-12 md:py-16">
           <div className="min-w-0">
             <p className="text-sm font-semibold text-accent">Catálogo para varejo e atacado</p>
-            <h1 className="mt-3 max-w-3xl text-4xl leading-tight font-semibold sm:text-5xl lg:text-6xl">Lotus 73, agora com pedidos pela loja virtual</h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-background/75 sm:text-lg">Encontre o que precisa, organize seu pedido e acompanhe cada etapa com praticidade.</p>
+            <h1 className="mt-3 max-w-3xl text-4xl leading-tight font-semibold sm:text-5xl lg:text-6xl">Loja virtual</h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-background/75 sm:text-lg">Consulte produtos, preços e disponibilidade no catálogo.</p>
             <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
               <Button size="lg" asChild className="h-12 bg-accent text-accent-foreground hover:bg-accent/90"><Link to="/catalogo" search={{ categoria: undefined }}>Ver catálogo <ArrowRight /></Link></Button>
               <Button size="lg" variant="outline" asChild className="h-12 border-background/30 bg-transparent text-background hover:bg-background hover:text-foreground"><Link to="/atacado">Comprar no atacado</Link></Button>
             </div>
           </div>
-          <img src={logoAsset.url} alt="Lotus 73 Tabacaria" className="mx-auto w-full max-w-72 rounded-full object-contain md:max-w-80" />
         </div>
       </section>
 
