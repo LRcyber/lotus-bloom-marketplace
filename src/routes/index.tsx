@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ProductGrid } from "@/components/product-grid";
 import { StoreShell } from "@/components/store-shell";
 import { demoCatalogQueryOptions as catalogQueryOptions } from "@/lib/demo-catalog";
+import bannerHome from "@/assets/banner-home.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(catalogQueryOptions),
