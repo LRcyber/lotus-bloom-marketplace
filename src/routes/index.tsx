@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ProductGrid } from "@/components/product-grid";
 import { StoreShell } from "@/components/store-shell";
 import { demoCatalogQueryOptions as catalogQueryOptions } from "@/lib/demo-catalog";
+import bannerHome from "@/assets/banner-home.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(catalogQueryOptions),
@@ -29,7 +30,7 @@ function Home() {
   return (
     <StoreShell>
       <section className="border-b border-border bg-foreground text-background">
-        <div className="mx-auto w-full max-w-7xl px-6 py-12 md:py-16">
+        <div className="mx-auto grid w-full max-w-7xl gap-8 px-6 py-12 md:py-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,460px)] lg:items-center">
           <div className="min-w-0">
             <p className="text-sm font-semibold text-accent">Catálogo demonstrativo</p>
             <h1 className="mt-3 max-w-3xl text-4xl leading-tight font-semibold sm:text-5xl lg:text-6xl">Loja virtual</h1>
@@ -39,6 +40,7 @@ function Home() {
               <Button size="lg" variant="outline" asChild className="h-12 border-background/30 bg-transparent text-background hover:bg-background hover:text-foreground"><Link to="/atacado">Comprar no atacado</Link></Button>
             </div>
           </div>
+          <img src={bannerHome.url} alt="Ambiente da loja com produtos organizados em prateleiras" loading="lazy" width={1024} height={1024} className="aspect-[4/3] w-full rounded-lg border border-background/20 object-cover shadow-elevated" />
         </div>
       </section>
 
