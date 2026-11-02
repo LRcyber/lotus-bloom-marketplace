@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -8,9 +8,7 @@ import { SearchBar } from "@/components/search-bar";
 import { StoreShell } from "@/components/store-shell";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getPublicCatalog } from "@/lib/catalog.functions";
-
-const catalogQueryOptions = queryOptions({ queryKey: ["public-catalog"], queryFn: () => getPublicCatalog() });
+import { demoCatalogQueryOptions as catalogQueryOptions } from "@/lib/demo-catalog";
 
 export const Route = createFileRoute("/catalogo")({
   validateSearch: (search: Record<string, unknown>) => ({ ['categoria']: typeof search['categoria'] === "string" ? search['categoria'] : undefined }),
