@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,7 @@ import { StatusBadge } from "@/components/status-badge";
 import { StoreShell } from "@/components/store-shell";
 import { useStore } from "@/components/store-provider";
 import { formatPrice } from "@/lib/catalog";
-import { getPublicCatalog } from "@/lib/catalog.functions";
-
-const catalogQueryOptions = queryOptions({ queryKey: ["public-catalog"], queryFn: () => getPublicCatalog() });
+import { demoCatalogQueryOptions as catalogQueryOptions } from "@/lib/demo-catalog";
 
 export const Route = createFileRoute("/produto/$productId")({
   loader: ({ context }) => context.queryClient.ensureQueryData(catalogQueryOptions),

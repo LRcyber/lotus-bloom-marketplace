@@ -1,12 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowRight, Building2, PackageCheck, ShieldCheck, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductGrid } from "@/components/product-grid";
 import { StoreShell } from "@/components/store-shell";
-import { getPublicCatalog } from "@/lib/catalog.functions";
-
-const catalogQueryOptions = queryOptions({ queryKey: ["public-catalog"], queryFn: () => getPublicCatalog() });
+import { demoCatalogQueryOptions as catalogQueryOptions } from "@/lib/demo-catalog";
 
 export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(catalogQueryOptions),
@@ -33,7 +31,7 @@ function Home() {
       <section className="border-b border-border bg-foreground text-background">
         <div className="mx-auto w-full max-w-7xl px-6 py-12 md:py-16">
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-accent">Catálogo para varejo e atacado</p>
+            <p className="text-sm font-semibold text-accent">Catálogo demonstrativo</p>
             <h1 className="mt-3 max-w-3xl text-4xl leading-tight font-semibold sm:text-5xl lg:text-6xl">Loja virtual</h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-background/75 sm:text-lg">Consulte produtos, preços e disponibilidade no catálogo.</p>
             <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">

@@ -9,3 +9,4 @@
 - [x] Conectar o catálogo visual à projeção segura do banco
 - [x] Retirar a marca e o logotipo para apresentar uma loja genérica
 - [x] Aplicar a atualização de segurança e validar a loja
+- [x] Preencher a loja com produtos locais demonstrativos e validar busca, categorias e carrinho
