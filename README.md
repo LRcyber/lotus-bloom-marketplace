@@ -112,5 +112,5 @@ Informações ausentes deverão ser identificadas como *Pendente de definição*
 
 ## 🔗 Links
 
-- **Aplicação:** [Lotus 73](https://lotus-bloom-marketplace.lovable.app)
-- **Desenvolvimento:** [Lovable Editor](https://lov
+- **Aplicação:** [LojaVirtual](https://lotus-bloom-marketplace.lovable.app)
+
