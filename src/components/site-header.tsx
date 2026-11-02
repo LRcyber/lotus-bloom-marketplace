@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, ShoppingBag, UserRound } from "lucide-react";
+import { LogIn, LogOut, Menu, ShoppingBag, UserRound } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { SearchBar } from "@/components/search-bar";
 import { useStore } from "@/components/store-provider";
@@ -28,7 +30,21 @@ export function SiteHeader() {
         </Link>
         <SearchBar className="hidden min-w-0 md:block lg:mx-6" />
         <div className="flex shrink-0 items-center gap-1">
-          <Button variant="ghost" size="icon" className="size-11" aria-label="Acessar conta"><UserRound /></Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="size-11" aria-label="Acessar conta"><UserRound /></Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={() => toast.info("Login do cliente será disponibilizado na próxima etapa.")}>
+                <LogIn /> Entrar
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => toast.info("Nenhuma sessão ativa nesta versão de demonstração.")}>
+                <LogOut /> Sair do aplicativo
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button variant="ghost" size="icon" className="relative size-11" aria-label={`Abrir carrinho com ${count} itens`} onClick={() => setCartOpen(true)}>
             <ShoppingBag />{count > 0 && <span className="absolute top-0.5 right-0.5 grid size-5 place-items-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">{count}</span>}
           </Button>
