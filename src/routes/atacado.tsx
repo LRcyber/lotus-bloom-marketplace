@@ -5,8 +5,8 @@ import { StoreShell } from "@/components/store-shell";
 
 export const Route = createFileRoute("/atacado")({
   head: () => ({ meta: [
-    { title: "Atacado — Lotus 73" }, { name: "description", content: "Entenda as condições de compra no atacado da Lotus 73." },
-    { property: "og:title", content: "Atacado — Lotus 73" }, { property: "og:description", content: "Cadastro e aprovação para condições de atacado da Lotus 73." },
+    { title: "Atacado — Loja virtual" }, { name: "description", content: "Entenda as condições de compra no atacado da loja virtual." },
+    { property: "og:title", content: "Atacado — Loja virtual" }, { property: "og:description", content: "Cadastro e aprovação para condições de atacado da loja virtual." },
     { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
   ] }), component: Atacado,
 });
