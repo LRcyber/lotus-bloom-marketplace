@@ -1,4 +1,4 @@
-# Lotus 73 — Loja Virtual
+Loja Virtual
 
 Plataforma de vendas online com catálogo de produtos, preços de varejo e atacado, gerenciamento de pedidos e integração futura com ERP.
 
