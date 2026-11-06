@@ -1,116 +1,112 @@
-Loja Virtual
+Online Store
 
-Plataforma de vendas online com catálogo de produtos, preços de varejo e atacado, gerenciamento de pedidos e integração futura com ERP.
+An online sales platform featuring a product catalog, retail and wholesale pricing, order management, and future ERP integration.
 
-## 🎯 Objetivo
+## 🎯 Objective
 
-Desenvolver uma aplicação de e-commerce com:
+To develop an e-commerce application that includes:
 
-- Catálogo e visualização de produtos.
-- Cadastro e autenticação de clientes.
-- Aprovação de clientes atacadistas.
-- Preços diferenciados para varejo e atacado.
-- Carrinho, checkout e acompanhamento de pedidos.
-- Painel administrativo.
-- Integração futura com o ERP LJ Sistemas.
-- Automações via n8n e notificações pelo WhatsApp.
+- Product catalog and viewing.
+- Customer registration and authentication.
+- Approval process for wholesale customers.
+- Differentiated pricing for retail and wholesale.
+- Shopping cart, checkout, and order tracking.
+- Administrative dashboard.
+- Future integration with the "LJ Sistemas" ERP.
+- Automation via n8n and notifications via WhatsApp.
 
-## 🛠️ Tecnologias
+## 🛠️ Technologies
 
-- **Frontend:** React, TypeScript e Vite.
+- **Frontend:** React, TypeScript, and Vite.
 - **Backend:** Supabase.
-- **Banco de dados:** PostgreSQL.
-- **Autenticação e segurança:** Supabase Auth e Row Level Security (RLS).
-- **Desenvolvimento:** Lovable.
-- **Integrações futuras:** API REST do LJ Sistemas, n8n e WhatsApp.
+- **Database:** PostgreSQL.
+- **Authentication and Security:** Supabase Auth and Row-Level Security (RLS).
+- **Development:** Lovable.
+- **Future Integrations:** LJ Sistemas REST API, n8n, and WhatsApp.
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
-O Supabase será o backend principal, responsável pelo banco de dados, autenticação, armazenamento e funções de servidor.
+Supabase will serve as the primary backend, handling the database, authentication, storage, and server-side functions.
 
-A arquitetura deverá ser modular, separando frontend, regras de negócio, persistência de dados, administração e integrações externas.
+The architecture will be modular, separating the frontend, business logic, data persistence, administration, and external integrations.
 
-## 👥 Perfis de usuário
+## 👥 User Profiles
 
-- **Varejo:** acesso ao catálogo, preços de varejo e pedidos.
-- **Atacado:** acesso aos preços de atacado após aprovação administrativa.
-- **Administrador:** gerenciamento de clientes, aprovação de cadastros e controle de pedidos.
+- **Retail:** Access to the catalog, retail pricing, and orders.
+- **Wholesale:** Access to wholesale pricing, granted following administrative approval.
+- **Administrator:** Management of customers, registration approvals, and order control.
 
-### Regras de preços
+### Pricing Rules
 
-Cada produto poderá possuir `preco_varejo` e `preco_atacado`.
+Each product may have both a `retail_price` and a `wholesale_price`.
 
-O catálogo será compartilhado entre os perfis. O preço exibido dependerá do perfil do cliente e, no atacado, da aprovação cadastral.
+The catalog is shared across all user profiles. The price displayed depends on the customer's profile and—for wholesale users—their registration status.
 
-Preços nulos ou iguais a zero deverão ser apresentados como **"Preço sob consulta"**.
+Prices that are null or equal to zero must be displayed as **"Price upon request."** ## 📦 Products and Orders
 
-## 📦 Produtos e pedidos
+Products must support unique identification, pricing, inventory levels, images, and mechanisms for future synchronization with the ERP system.
 
-Os produtos deverão suportar identificação única, preços, estoque, imagens e controle de sincronização futura com o ERP.
+The order workflow will be:
 
-O fluxo de pedidos será:
+**Catalog → Product → Cart → Checkout → Order → Administration**
 
-**Catálogo → Produto → Carrinho → Checkout → Pedido → Administração**
+Order statuses will be managed by the administrative team:
 
-Os pedidos terão status controlados pela equipe administrativa:
+- Received
+- Confirmed
+- In preparation
+- Out for delivery
+- Delivered
 
-- Recebido
-- Confirmado
-- Em preparação
-- Saiu para entrega
-- Entregue
-
-## 🔗 Integrações futuras
+## 🔗 Future Integrations
 
 ### LJ Sistemas
-- Sincronização de produtos e estoque.
-- Envio de vendas ao ERP.
-- Registro de logs e tratamento de erros.
-- Prevenção de vendas duplicadas.
+- Synchronization of products and inventory.
+- Transmission of sales data to the ERP.
+- Logging and error handling.
+- Prevention of duplicate sales.
 
-A API utiliza REST/JSON e autenticação JWT. A integração ainda não deverá ser implementada.
+The API uses REST/JSON and JWT authentication. This integration is not to be implemented at this stage.
 
-### n8n e WhatsApp
-- Automações e tarefas programadas.
-- Notificações de pedidos.
-- Monitoramento operacional.
+### n8n and WhatsApp
+- Automations and scheduled tasks.
+- Order notifications.
+- Operational monitoring.
 
-O n8n não deverá ser uma dependência obrigatória para operações críticas do sistema.
+n8n must not be a mandatory dependency for critical system operations.
 
-## 🔐 Segurança
+## 🔐 Security
 
-- Utilizar RLS para proteger os dados no Supabase.
-- Restringir o acesso dos clientes aos próprios pedidos.
-- Proteger rotas e operações administrativas.
-- Impedir o acesso aos preços de atacado por clientes não aprovados.
-- Manter credenciais e tokens do ERP exclusivamente no backend, utilizando Secrets ou variáveis de ambiente.
+- Use RLS (Row-Level Security) to protect data within Supabase.
+- Restrict customer access to their own orders only.
+- Secure administrative routes and operations.
+- Prevent unauthorized customers from accessing wholesale pricing.
+- Keep ERP credentials and tokens exclusively on the backend, using Secrets or environment variables.
 
-## 🗄️ Modelagem do banco
+## 🗄️ Database Modeling
 
-A estrutura proposta deverá contemplar:
+The proposed structure must include:
 
-`profiles`, `customers`, `wholesale_customers`, `categories`, `products`, `orders`, `order_items`, `addresses`, `integration_logs`, `sync_control` e `product_images`.
+`profiles`, `customers`, `wholesale_customers`, `categories`, `products`, `orders`, `order_items`, `addresses`, `integration_logs`, `sync_control`, and `product_images`.
 
-A modelagem deverá considerar normalização, chaves estrangeiras, índices, constraints e políticas RLS.
+The database design must incorporate normalization, foreign keys, indexes, constraints, and RLS policies.
 
-## 🚧 Status do projeto
+## 🚧 Project Status
 
-**Etapa atual:** análise da arquitetura e planejamento técnico.
+**Current stage:** Architectural analysis and technical planning.
 
-Antes de implementar novas funcionalidades, é necessário analisar a estrutura existente e documentar:
+Before implementing new features, it is necessary to analyze the existing structure and document:
 
-- Arquitetura, componentes e rotas atuais.
-- Banco de dados, relacionamentos e políticas RLS.
-- Autenticação e funções de backend.
-- Conflitos, dependências e riscos técnicos.
-- Alterações necessárias e componentes a preservar.
-- Ordem recomendada de implementação.
+- Current architecture, components, and routes. - Database, relationships, and RLS (Row-Level Security) policies.
+- Authentication and backend functions.
+- Conflicts, dependencies, and technical risks.
+- Required changes and components to be preserved.
+- Recommended implementation order.
 
-**Nesta etapa, não executar migrations, instalar dependências ou alterar código.**
+**At this stage, do not execute migrations, install dependencies, or modify any code.**
 
-Informações ausentes deverão ser identificadas como *Pendente de definição* ou *Pendente de confirmação*.
+Any missing information should be marked as *Pending definition* or *Pending confirmation*.
 
 ## 🔗 Links
 
-- **Aplicação:** [LojaVirtual](https://lotus-bloom-marketplace.lovable.app)
-
+- **Application:** [LojaVirtual](https://lotus-bloom-marketplace.lovable.app)
